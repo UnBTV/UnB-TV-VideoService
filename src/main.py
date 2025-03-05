@@ -1,11 +1,16 @@
+import sys
+import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+
+# Adiciona o diretório `src` ao Python Path dinamicamente
+current_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(current_dir)
+sys.path.append(os.path.join(current_dir, ".."))
+
 from database import init_db  # Adicione a função de inicialização do banco de dados
 from controller import commentController, scheduleController, savedVideosController, recordController, recommendationController
 from controller.savedVideosController import WatchLater
-
-# from src.controller import commentController, scheduleController
-from controller import  scheduleController
 
 # Desativado os os comentarios nos videos
 # from database import SessionLocal, engine
@@ -15,15 +20,18 @@ from controller import  scheduleController
 
 app = FastAPI()
 
-origins = ["*"]
+origins = [
+    "https://unbtv.com.br",
+    "http://localhost:4200",
+]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=origins,
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["*"], 
     allow_headers=["*"],
-) 
+)
 
 # Inicializar o banco de dados
 init_db()

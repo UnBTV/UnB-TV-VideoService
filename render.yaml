@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: UnBTV-VideoService
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn src.main:app --host 0.0.0.0 --port $PORT
+    rootDirectory: .
+    instanceType: free
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHONPATH
+        value: ./src
